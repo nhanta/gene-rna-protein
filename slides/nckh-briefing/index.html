@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Rosetta Cellular · Bài toán · Mục đích · Từng SV</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="slides.css"/>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<!-- 1 -->
+<section class="slide cover">
+  <div class="cover-top">
+    <div class="brand">ĐỀ TÀI NCKH</div>
+    <div class="pill">3 SV · họp 20:30 tối thứ Năm · giao 22/11/2026</div>
+  </div>
+  <h1 class="small">Áp dụng học máy trong phân tích thông tin chung và thông tin bổ sung giữa hồ sơ kiểu hình tế bào và biểu hiện gen khi tế bào bị quá biểu hiện gen hoặc bị xử lý bằng hợp chất hóa học</h1>
+  <p class="lede">
+    Sau khi tế bào bị <strong>quá biểu hiện một gen</strong> hoặc <strong>xử lý bằng hợp chất hóa học</strong>, nhóm đo
+    <strong>hồ sơ kiểu hình</strong> (ảnh nhuộm huỳnh quang) và <strong>mức biểu hiện gen</strong> (mRNA).
+    Một phần thay đổi thấy được ở cả hai phép đo (có thể dự đoán chéo); một phần chỉ thấy rõ ở ảnh hoặc chỉ ở mRNA
+    (ví dụ thuốc đổi hình tế bào mà ít đổi phiên mã, hoặc ngược lại — Haghighi; Way). Ba sinh viên cùng quy trình; sau NCKH mỗi người một đồ án.
+  </p>
+  <div class="tagrow">
+    <span class="tag">NCKH · 3 SV · họp 20:30 tối thứ Năm</span>
+    <span class="tag sand">Giao bài 22/11/2026</span>
+  </div>
+  <div class="brand-foot">Đề tài NCKH · 3 đồ án tốt nghiệp</div>
+  <div class="slide-num">1 / 27</div>
+</section>
+
+<!-- 2 DEFINE ASSAYS -->
+<section class="slide">
+  <div class="eyebrow">Hai phép đo trong dự án</div>
+  <h1>Hai phép đo → hai hồ sơ số</h1>
+  <svg class="diagram" viewBox="0 0 900 155" style="max-height:62mm">
+    <rect x="10" y="10" width="430" height="135" rx="10" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="225" y="36" text-anchor="middle" font-size="14" font-weight="700">L1000 · biểu hiện gen</text>
+    <rect x="30" y="50" width="90" height="40" rx="6" fill="#FFFEFA" stroke="#1A9B8E"/>
+    <text x="75" y="75" text-anchor="middle" font-size="11">Tế bào</text>
+    <text x="130" y="75" font-size="16" fill="#1A9B8E">→</text>
+    <rect x="150" y="50" width="100" height="40" rx="6" fill="#FFFEFA" stroke="#1A9B8E"/>
+    <text x="200" y="68" text-anchor="middle" font-size="10">đo mRNA</text>
+    <text x="200" y="82" text-anchor="middle" font-size="10">~978 landmark</text>
+    <text x="260" y="75" font-size="16" fill="#1A9B8E">→</text>
+    <rect x="280" y="50" width="140" height="40" rx="6" fill="#FFFEFA" stroke="#0B3A4A" stroke-width="2"/>
+    <text x="350" y="75" text-anchor="middle" font-size="11" font-weight="700">vector GE</text>
+    <text x="225" y="118" text-anchor="middle" font-size="11" fill="#4E6570">Subramanian · Haghighi · trạng thái phiên mã</text>
+    <text x="225" y="134" text-anchor="middle" font-size="11" fill="#4E6570">không phải toàn bộ RNA-seq</text>
+
+    <rect x="460" y="10" width="430" height="135" rx="10" fill="#FFF6E8" stroke="#D4A24A" stroke-width="2"/>
+    <text x="675" y="36" text-anchor="middle" font-size="14" font-weight="700">Cell Painting · kiểu hình</text>
+    <rect x="480" y="50" width="70" height="40" rx="6" fill="#FFFEFA" stroke="#D4A24A"/>
+    <text x="515" y="75" text-anchor="middle" font-size="11">Nhuộm</text>
+    <text x="560" y="75" font-size="16" fill="#D4A24A">→</text>
+    <rect x="580" y="50" width="70" height="40" rx="6" fill="#FFFEFA" stroke="#D4A24A"/>
+    <text x="615" y="75" text-anchor="middle" font-size="11">Ảnh</text>
+    <text x="660" y="75" font-size="16" fill="#D4A24A">→</text>
+    <rect x="680" y="50" width="90" height="40" rx="6" fill="#FFFEFA" stroke="#D4A24A"/>
+    <text x="725" y="68" text-anchor="middle" font-size="10">CellProfiler</text>
+    <text x="725" y="82" text-anchor="middle" font-size="10">đặc trưng</text>
+    <text x="780" y="75" font-size="16" fill="#D4A24A">→</text>
+    <rect x="800" y="50" width="70" height="40" rx="6" fill="#FFFEFA" stroke="#0B3A4A" stroke-width="2"/>
+    <text x="835" y="75" text-anchor="middle" font-size="11" font-weight="700">vector CP</text>
+    <text x="675" y="118" text-anchor="middle" font-size="11" fill="#4E6570">Bray 2016 · nhân / ER / ty thể / actin…</text>
+    <text x="675" y="134" text-anchor="middle" font-size="11" fill="#4E6570">hình dạng · cường độ · kết cấu</text>
+  </svg>
+  <table class="nice" style="margin-top:2mm">
+    <tr><th>Điểm</th><th>L1000</th><th>Cell Painting</th></tr>
+    <tr><td>Đầu vào</td><td>lysate / mẫu phiên mã</td><td>tế bào cố định, nhuộm huỳnh quang</td></tr>
+    <tr><td>Đầu ra</td><td>~978 số mức mRNA landmark</td><td>hàng trăm–nghìn đặc trưng hình thái</td></tr>
+    <tr><td>Layout Rosetta</td><td colspan="2">Hai bộ đĩa song song · cùng sơ đồ nhiễu loạn · không cùng một giếng</td></tr>
+  </table>
+  <div class="brand-foot">Bray 2016 · Subramanian · Haghighi 2022</div>
+  <div class="slide-num">2 / 27</div>
+</section>
+
+<!-- 2b GLOSSARY DATA -->
+<section class="slide">
+  <div class="eyebrow">Thuật ngữ · 1/2</div>
+  <h1>Hai hồ sơ và dữ liệu — đọc trước khi xem sơ đồ</h1>
+  <table class="nice compact">
+    <tr><th>Ký hiệu</th><th>Đọc là</th><th>Nghĩa ngắn</th></tr>
+    <tr><td><strong>CP</strong></td><td>Cell Painting</td><td>Hồ sơ số rút từ ảnh tế bào đã nhuộm huỳnh quang (hình dạng, cường độ, kết cấu).</td></tr>
+    <tr><td><strong>GE</strong></td><td>Gene expression</td><td>Mức biểu hiện gen; trong dự án này = vector mức <strong>mRNA</strong> từ L1000.</td></tr>
+    <tr><td><strong>L1000</strong></td><td>Library of 1000</td><td>Phép đo ~978 gen <strong>landmark</strong> (bản phiên mã mRNA), không phải toàn bộ transcriptome.</td></tr>
+    <tr><td><strong>landmark</strong></td><td>gen điểm mốc</td><td>Bộ gen L1000 đo trực tiếp; giữ tên Anh như trong paper.</td></tr>
+    <tr><td><strong>Rosetta</strong></td><td>cpg0003-rosetta</td><td>Bộ dữ liệu có <em>cả</em> CP và L1000 cùng layout nhiễu loạn (neo nhóm).</td></tr>
+    <tr><td><strong>TA-ORF</strong></td><td>tập quá biểu hiện</td><td>Tập con Rosetta: tế bào bị quá biểu hiện một gen (ORF).</td></tr>
+    <tr><td><strong>MoA</strong></td><td>mechanism of action</td><td>Cơ chế tác dụng của hợp chất / thuốc.</td></tr>
+    <tr><td><strong>batch / plate / well</strong></td><td>lô / đĩa / giếng</td><td>Nguồn nhiễu kỹ thuật (máy, ngày chạy, vị trí giếng) — SV A chỉnh.</td></tr>
+  </table>
+  <div class="brand-foot">Thuật ngữ · xem tiếp slide sau (toán / học máy)</div>
+  <div class="slide-num">3 / 27</div>
+</section>
+
+<!-- 2c GLOSSARY MATH -->
+<section class="slide">
+  <div class="eyebrow">Thuật ngữ · 2/2</div>
+  <h1>Toán và học máy dùng trong nhóm</h1>
+  <table class="nice compact">
+    <tr><th>Ký hiệu</th><th>Đọc là</th><th>Nghĩa ngắn</th></tr>
+    <tr><td><strong>PCA / SVD</strong></td><td>thành phần chính / phân rã</td><td>Phân tích hướng biến thiên chính của ma trận đặc trưng; bước nền cho whitening.</td></tr>
+    <tr><td><strong>whitening / sphering</strong></td><td>làm trắng / “tròn hóa”</td><td>Biến đổi hồ sơ theo hiệp phương sai giếng đối chứng để giảm nhiễu kỹ thuật.</td></tr>
+    <tr><td><strong>TVN</strong></td><td>Typical Variation Normalization</td><td>Quy trình Ando: PCA + chuẩn hóa trục + CORAL theo lô (dạng sphering đầy đủ hơn).</td></tr>
+    <tr><td><strong>CORAL</strong></td><td>correlation alignment</td><td>Căn chỉnh ma trận tương quan giữa các lô thí nghiệm.</td></tr>
+    <tr><td><strong>Harmony / ComBat</strong></td><td>chỉnh batch</td><td>Hai phương pháp chỉnh nhiễu lô khác — SV A so sánh với sphering/TVN.</td></tr>
+    <tr><td><strong>Lasso</strong></td><td>hồi quy ℓ₁</td><td>Hồi quy tuyến tính có phạt thưa — baseline dự đoán chéo (SV B).</td></tr>
+    <tr><td><strong>MLP</strong></td><td>multi-layer perceptron</td><td>Mạng nơ-ron nhiều lớp — baseline phi tuyến của paper (SV B).</td></tr>
+    <tr><td><strong>early / late fusion</strong></td><td>ghép sớm / muộn</td><td>Ghép sớm = nối vector CP+GE; ghép muộn = trung bình xác suất hai bộ phân loại.</td></tr>
+    <tr><td><strong>RGCCA</strong></td><td>Regularized GCCA</td><td>Phân tích tương quan chính tắc tổng quát hóa có chỉnh hóa — rồi ghép trong không gian chung (SV C).</td></tr>
+    <tr><td><strong>R² · % gen · Jaccard · F1 · mAP</strong></td><td>độ đo</td><td>R² / % gen = dự đoán chéo; Jaccard / F1 = cơ chế thuốc; mAP / % replicating = chất lượng hồ sơ sau chỉnh nhiễu.</td></tr>
+  </table>
+  <div class="brand-foot">Thuật ngữ · quay lại khi gặp ký hiệu trên sơ đồ</div>
+  <div class="slide-num">4 / 27</div>
+</section>
+
+<!-- 3 PROBLEM -->
+<section class="slide">
+  <div class="eyebrow">Bài toán · mục đích · ứng dụng — 1/3</div>
+  <h1>Bài toán: hai hồ sơ số sau nhiễu loạn — ba hướng tính</h1>
+  <svg class="diagram" viewBox="0 0 900 88" style="max-height:34mm">
+    <rect x="10" y="14" width="175" height="60" rx="8" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="97" y="40" text-anchor="middle" font-size="13" font-weight="700">Nhiễu loạn</text>
+    <text x="97" y="58" text-anchor="middle" font-size="11" fill="#4E6570">thuốc · quá biểu hiện gen</text>
+    <text x="200" y="48" font-size="20" fill="#1A9B8E">→</text>
+    <rect x="230" y="8" width="220" height="32" rx="8" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="340" y="29" text-anchor="middle" font-size="12" font-weight="700">L1000 · mức mRNA landmark</text>
+    <rect x="230" y="48" width="220" height="32" rx="8" fill="#FFF6E8" stroke="#D4A24A" stroke-width="2"/>
+    <text x="340" y="69" text-anchor="middle" font-size="12" font-weight="700">Cell Painting · hồ sơ từ ảnh nhuộm</text>
+    <text x="465" y="48" font-size="20" fill="#1A9B8E">→</text>
+    <rect x="495" y="14" width="390" height="60" rx="8" fill="#FFFEFA" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="690" y="40" text-anchor="middle" font-size="13" font-weight="700">Hai vector số cùng layout nhiễu loạn</text>
+    <text x="690" y="58" text-anchor="middle" font-size="11" fill="#4E6570">hai bộ đĩa song song · Rosetta</text>
+  </svg>
+  <table class="nice" style="margin-top:3mm">
+    <tr><th>SV</th><th>Câu hỏi tính toán</th><th>Phương pháp</th><th>Độ đo</th></tr>
+    <tr>
+      <td><strong>A</strong></td>
+      <td>Làm sạch nhiễu kỹ thuật trên hồ sơ ảnh</td>
+      <td>SVD, PCA, sphering, TVN, CORAL; Harmony, ComBat</td>
+      <td>percent replicating, mAP</td>
+    </tr>
+    <tr>
+      <td><strong>B</strong></td>
+      <td>Hai hồ sơ dự đoán chéo được bao nhiêu?</td>
+      <td>Lasso, MLP</td>
+      <td>R², % gen dự đoán được</td>
+    </tr>
+    <tr>
+      <td><strong>C</strong></td>
+      <td>Ghép hai hồ sơ có đoán cơ chế thuốc tốt hơn?</td>
+      <td>Early / late fusion, RGCCA, phân loại</td>
+      <td>Jaccard, F1</td>
+    </tr>
+  </table>
+  <div class="brand-foot">Haghighi 2022</div>
+  <div class="slide-num">5 / 27</div>
+</section>
+
+<!-- 4 PURPOSE -->
+<section class="slide">
+  <div class="eyebrow">Bài toán · mục đích · ứng dụng — 2/3</div>
+  <h1>Ba mục đích đo được</h1>
+  <svg class="diagram" viewBox="0 0 900 125" style="max-height:50mm">
+    <rect x="15" y="8" width="280" height="110" rx="10" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="155" y="32" text-anchor="middle" font-size="14" font-weight="700">1 · Thông tin chung</text>
+    <rect x="45" y="45" width="80" height="28" rx="5" fill="#FFFEFA" stroke="#1A9B8E"/>
+    <text x="85" y="64" text-anchor="middle" font-size="11">CP</text>
+    <text x="145" y="64" font-size="15" fill="#1A9B8E">↔</text>
+    <rect x="170" y="45" width="80" height="28" rx="5" fill="#FFFEFA" stroke="#1A9B8E"/>
+    <text x="210" y="64" text-anchor="middle" font-size="11">GE</text>
+    <text x="155" y="92" text-anchor="middle" font-size="12" fill="#4E6570">dự đoán chéo · Lasso/MLP</text>
+    <text x="155" y="108" text-anchor="middle" font-size="11" font-weight="600">SV B</text>
+
+    <rect x="310" y="8" width="280" height="110" rx="10" fill="#FFF6E8" stroke="#D4A24A" stroke-width="2"/>
+    <text x="450" y="32" text-anchor="middle" font-size="14" font-weight="700">2 · Thông tin bổ sung</text>
+    <rect x="345" y="45" width="70" height="28" rx="5" fill="#FFFEFA" stroke="#D4A24A"/>
+    <text x="380" y="64" text-anchor="middle" font-size="11">CP</text>
+    <text x="430" y="64" font-size="14" fill="#D4A24A">+</text>
+    <rect x="450" y="45" width="70" height="28" rx="5" fill="#FFFEFA" stroke="#D4A24A"/>
+    <text x="485" y="64" text-anchor="middle" font-size="11">GE</text>
+    <text x="450" y="92" text-anchor="middle" font-size="12" fill="#4E6570">ghép · early/late/RGCCA</text>
+    <text x="450" y="108" text-anchor="middle" font-size="11" font-weight="600">SV C</text>
+
+    <rect x="605" y="8" width="280" height="110" rx="10" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="745" y="32" text-anchor="middle" font-size="14" font-weight="700">3 · Giảm nhiễu kỹ thuật</text>
+    <rect x="640" y="45" width="210" height="28" rx="5" fill="#FFFEFA" stroke="#1A9B8E"/>
+    <text x="745" y="64" text-anchor="middle" font-size="11">CP thô → CP đã chỉnh</text>
+    <text x="745" y="92" text-anchor="middle" font-size="12" fill="#4E6570">sphering · TVN · …</text>
+    <text x="745" y="108" text-anchor="middle" font-size="11" font-weight="600">SV A · rồi B/C đo lại</text>
+  </svg>
+  <table class="nice compact">
+    <tr><th>Mục đích</th><th>Ý nghĩa</th><th>Việc làm trên máy</th><th>Tiêu chí thành công</th></tr>
+    <tr>
+      <td><strong>Thông tin chung</strong></td>
+      <td>Phần thay đổi tế bào mà <em>cả ảnh lẫn mRNA đều thể hiện</em>, nên đoán được qua lại giữa hai hồ sơ.</td>
+      <td>Học hàm: ảnh → mRNA và mRNA → ảnh (Lasso, MLP).</td>
+      <td>R² đủ tốt so với xáo trộn ngẫu nhiên · báo <strong>% gen dự đoán được</strong>.</td>
+    </tr>
+    <tr>
+      <td><strong>Thông tin bổ sung</strong></td>
+      <td>Phần chỉ rõ ở <em>một</em> phép đo (ví dụ thuốc đổi hình nhưng ít đổi phiên mã), nên cần <em>ghép</em> hai hồ sơ.</td>
+      <td>Nối / kết hợp CP+GE rồi phân loại cơ chế thuốc.</td>
+      <td>Jaccard / F1 khi ghép <strong>cao hơn</strong> (hoặc không kém) so với chỉ dùng một hồ sơ.</td>
+    </tr>
+    <tr>
+      <td><strong>Giảm nhiễu kỹ thuật</strong></td>
+      <td>Đĩa/lô/vị trí giếng làm lệch số liệu giả; làm sạch trên hồ sơ ảnh trước khi so sánh.</td>
+      <td>Sphering, TVN, … trên CP; B và C chạy lại trên bản đã chỉnh.</td>
+      <td>% replicating / mAP tốt hơn · % gen hoặc MoA <strong>đo lại</strong> sau chỉnh nhiễu.</td>
+    </tr>
+  </table>
+  <div class="brand-foot">Haghighi Hình 2–4 · Way · Ando · Arevalo</div>
+  <div class="slide-num">6 / 27</div>
+</section>
+
+<!-- 5 APP -->
+<section class="slide">
+  <div class="eyebrow">Bài toán · mục đích · ứng dụng — 3/3</div>
+  <h1 class="small">Ứng dụng: ba việc lab làm được từ hai hồ sơ</h1>
+  <svg class="diagram" viewBox="0 0 900 155" style="max-height:58mm">
+    <rect x="300" y="4" width="300" height="36" rx="8" fill="#FFFEFA" stroke="#0B3A4A" stroke-width="2"/>
+    <text x="450" y="27" text-anchor="middle" font-size="12" font-weight="700">Hai hồ sơ số · tế bào nuôi cấy</text>
+    <line x1="450" y1="40" x2="450" y2="55" stroke="#1A9B8E" stroke-width="2"/>
+    <line x1="160" y1="55" x2="740" y2="55" stroke="#1A9B8E" stroke-width="2"/>
+    <line x1="160" y1="55" x2="160" y2="68" stroke="#1A9B8E" stroke-width="2"/>
+    <line x1="450" y1="55" x2="450" y2="68" stroke="#1A9B8E" stroke-width="2"/>
+    <line x1="740" y1="55" x2="740" y2="68" stroke="#1A9B8E" stroke-width="2"/>
+    <rect x="20" y="68" width="280" height="80" rx="8" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="160" y="92" text-anchor="middle" font-size="13" font-weight="700">① Cơ chế thuốc</text>
+    <text x="160" y="112" text-anchor="middle" font-size="11" fill="#4E6570">chất mới ↔ nhóm đã biết</text>
+    <text x="160" y="132" text-anchor="middle" font-size="11" font-weight="600">SV C · ghép hồ sơ</text>
+    <rect x="310" y="68" width="280" height="80" rx="8" fill="#FFF6E8" stroke="#D4A24A" stroke-width="2"/>
+    <text x="450" y="92" text-anchor="middle" font-size="13" font-weight="700">② Chức năng gen</text>
+    <text x="450" y="112" text-anchor="middle" font-size="11" fill="#4E6570">quá biểu hiện → so control</text>
+    <text x="450" y="132" text-anchor="middle" font-size="11" font-weight="600">Rosetta · Rohban</text>
+    <rect x="600" y="68" width="280" height="80" rx="8" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="740" y="92" text-anchor="middle" font-size="13" font-weight="700">③ Ưu tiên phép đo</text>
+    <text x="740" y="112" text-anchor="middle" font-size="11" fill="#4E6570">ảnh → một phần mRNA</text>
+    <text x="740" y="132" text-anchor="middle" font-size="11" font-weight="600">SV B · SV A</text>
+  </svg>
+  <table class="nice" style="margin-top:2mm">
+    <tr><th>Ứng dụng</th><th>Đầu vào lab</th><th>Đầu ra hữu ích</th><th>Ai làm</th></tr>
+    <tr><td>① Cơ chế thuốc</td><td>hồ sơ chất mới + thư viện đã biết</td><td>nhóm cơ chế gợi ý</td><td>C</td></tr>
+    <tr><td>② Chức năng gen</td><td>quá biểu hiện gen + control</td><td>cụm gen cùng kiểu hồ sơ</td><td>Rosetta / Rohban</td></tr>
+    <tr><td>③ Ưu tiên phép đo</td><td>ảnh đã chạy · (tuỳ) L1000</td><td>% gen suy được từ ảnh</td><td>B (+ A)</td></tr>
+  </table>
+  <div class="brand-foot">Haghighi · Way · Rohban · tế bào nuôi cấy</div>
+  <div class="slide-num">7 / 27</div>
+</section>
+
+<!-- 6 WHY BATCH + AREVALO FIG -->
+<section class="slide">
+  <div class="eyebrow">Hình từ paper · SV A / 3</div>
+  <h1 class="small">A — chỉnh nhiễu kỹ thuật trên hồ sơ Cell Painting (Arevalo 2024, Fig. 1)</h1>
+  <div class="two-col">
+    <div class="fig-panel">
+      <img src="figures/arevalo_fig1.png" alt="Arevalo et al. 2024 Figure 1 evaluation pipeline"/>
+      <p class="fig-cap"><strong>Nguồn:</strong> Arevalo et al., Nat Commun 2024, Fig. 1 · DOI 10.1038/s41467-024-50613-5</p>
+    </div>
+    <div>
+      <p class="body">Giảm khác biệt kỹ thuật (máy, lab, lô) trên hồ sơ đặc trưng; đo <strong>loại bỏ batch</strong> và <strong>bảo toàn tín hiệu sinh học</strong>.</p>
+      <p class="body"><strong>Phương pháp:</strong> SVD, PCA, whitening / sphering, TVN, CORAL; so sánh Harmony, ComBat.</p>
+      <p class="body"><strong>Độ đo:</strong> percent replicating, mAP.</p>
+      <div class="callout sand">Nhiễu kỹ thuật = đĩa / lô / vị trí giếng — không phải tín hiệu kiểu hình cần giữ (Ando).</div>
+    </div>
+  </div>
+  <div class="brand-foot">SV A · Arevalo 2024</div>
+  <div class="slide-num">8 / 27</div>
+</section>
+
+<!-- 5b WHY B + HAGHIGHI FIG2 -->
+<section class="slide">
+  <div class="eyebrow">Hình từ paper · SV B / 3</div>
+  <h1 class="small">B — dự đoán chéo kiểu hình ↔ biểu hiện gen (Haghighi 2022, Fig. 2)</h1>
+  <div class="two-col">
+    <div class="fig-panel">
+      <img src="figures/haghighi_fig2.png" alt="Haghighi et al. 2022 Figure 2"/>
+      <p class="fig-cap"><strong>Nguồn:</strong> Haghighi et al., Nat Methods 2022, Fig. 2 · DOI 10.1038/s41592-022-01667-0 · TA-ORF ~4,7% / 5,5%</p>
+    </div>
+    <div>
+      <p class="body">Đo <strong>thông tin chung</strong>: học hàm dự đoán mức mRNA landmark từ hồ sơ Cell Painting (và chiều ngược).</p>
+      <p class="body"><strong>Phương pháp:</strong> Lasso, MLP.</p>
+      <p class="body"><strong>Độ đo:</strong> R², % gen dự đoán được (so với xáo trộn ngẫu nhiên).</p>
+      <div class="callout sand">Trên TA-ORF, paper báo ~4,7% / 5,5% gen dự đoán được — nhóm báo cùng hướng số liệu.</div>
+    </div>
+  </div>
+  <div class="brand-foot">SV B · Haghighi 2022 Fig. 2</div>
+  <div class="slide-num">9 / 27</div>
+</section>
+
+<!-- 5c WHY C + HAGHIGHI FIG4 -->
+<section class="slide">
+  <div class="eyebrow">Hình từ paper · SV C / 3</div>
+  <h1 class="small">C — ghép hai hồ sơ để đoán cơ chế thuốc (Haghighi 2022, Fig. 4)</h1>
+  <div class="two-col">
+    <div class="fig-panel">
+      <img src="figures/haghighi_fig4.png" alt="Haghighi et al. 2022 Figure 4"/>
+      <p class="fig-cap"><strong>Nguồn:</strong> Haghighi et al., Nat Methods 2022, Fig. 4 · DOI 10.1038/s41592-022-01667-0 · CDRP-bio &amp; LINCS</p>
+    </div>
+    <div>
+      <p class="body">Đo <strong>thông tin bổ sung</strong>: ghép hai hồ sơ có giúp đoán cơ chế thuốc tốt hơn từng phép đo đơn không.</p>
+      <p class="body"><strong>Phương pháp:</strong> early fusion, late fusion, RGCCA, phân loại.</p>
+      <p class="body"><strong>Độ đo:</strong> Jaccard, F1.</p>
+      <div class="callout sand">Fig. 4 chạy trên CDRP-bio và LINCS — hợp chất có nhãn cơ chế.</div>
+    </div>
+  </div>
+  <div class="brand-foot">SV C · Haghighi 2022 Fig. 4</div>
+  <div class="slide-num">10 / 27</div>
+</section>
+
+<!-- 9 DATA NEO -->
+<section class="slide">
+  <div class="eyebrow">Dữ liệu · tầng 1 — neo multimodal (bắt buộc)</div>
+  <h1>Chỉ Rosetta có cả L1000 và hồ sơ từ Cell Painting cùng layout</h1>
+  <svg class="diagram" viewBox="0 0 900 55" style="max-height:22mm;margin-bottom:1mm">
+    <rect x="20" y="8" width="200" height="40" rx="8" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="120" y="33" text-anchor="middle" font-size="12" font-weight="700">cpg0003-rosetta</text>
+    <text x="235" y="33" font-size="18" fill="#1A9B8E">→</text>
+    <rect x="260" y="8" width="140" height="40" rx="8" fill="#FFFEFA" stroke="#1A9B8E"/>
+    <text x="330" y="33" text-anchor="middle" font-size="12">LUAD</text>
+    <rect x="415" y="8" width="140" height="40" rx="8" fill="#FFFEFA" stroke="#1A9B8E"/>
+    <text x="485" y="33" text-anchor="middle" font-size="12">LINCS</text>
+    <rect x="570" y="8" width="140" height="40" rx="8" fill="#FFFEFA" stroke="#1A9B8E"/>
+    <text x="640" y="33" text-anchor="middle" font-size="12">CDRP</text>
+    <rect x="725" y="8" width="155" height="40" rx="8" fill="#FFFEFA" stroke="#1A9B8E"/>
+    <text x="802" y="33" text-anchor="middle" font-size="12">TA-ORF</text>
+  </svg>
+  <p class="body">Mỗi tập có thư mục <code>CellPainting/</code> và <code>L1000/</code>. Bộ tầng 2–3 (slide sau) hỗ trợ chỉnh nhiễu / đối chiếu ảnh.</p>
+  <table class="nice">
+    <tr><th>Mục</th><th>Link / lệnh</th></tr>
+    <tr><td>Portal</td><td><a class="link" href="https://broad.io/rosetta/" target="_blank" rel="noopener">https://broad.io/rosetta/</a></td></tr>
+    <tr><td>DOI paper</td><td><a class="link" href="https://doi.org/10.1038/s41592-022-01667-0" target="_blank" rel="noopener">10.1038/s41592-022-01667-0</a></td></tr>
+    <tr><td>Code</td><td><a class="link" href="https://github.com/carpenter-singh-lab/2022_Haghighi_NatureMethods" target="_blank" rel="noopener">github.com/carpenter-singh-lab/2022_Haghighi_NatureMethods</a></td></tr>
+    <tr><td>Gallery ID</td><td><code>cpg0003-rosetta</code> (~8,5 GB số) · mục lục: <a class="link" href="https://broadinstitute.github.io/cellpainting-gallery/complete_datasets.html" target="_blank" rel="noopener">complete_datasets</a></td></tr>
+  </table>
+  <div class="code-block">aws s3 sync --no-sign-request ^
+  s3://cellpainting-gallery/cpg0003-rosetta/broad/workspace/curated_preprocessed_data ^
+  ./data/raw/rosetta_curated</div>
+  <p class="body" style="margin-bottom:0">Trong curated: <strong>LUAD</strong>, <strong>LINCS-Pilot1</strong>, <strong>CDRP</strong>, <strong>TA-ORF</strong> — mỗi tập có thư mục CellPainting/ và L1000/.</p>
+  <div class="brand-foot">Hướng dẫn S3: broadinstitute.github.io/cellpainting-gallery/download_instructions.html</div>
+  <div class="slide-num">11 / 27</div>
+</section>
+
+<!-- 8 DATA SUPPORT -->
+<section class="slide">
+  <div class="eyebrow">Dữ liệu · tầng 2–3 — hỗ trợ &amp; mở rộng (đủ link)</div>
+  <h1>JUMP · Arevalo · CPJUMP1 · Way · GEO — đúng vai trò</h1>
+  <table class="nice">
+    <tr><th>Bộ</th><th>Vai trò trong dự án</th><th>Link tải</th></tr>
+    <tr>
+      <td><strong>Arevalo + Zenodo</strong></td>
+      <td>SV A: benchmark chỉnh batch</td>
+      <td><a class="link" href="https://github.com/carpenter-singh-lab/2023_Arevalo_BatchCorrection" target="_blank" rel="noopener">GitHub</a> · <a class="link" href="https://doi.org/10.5281/zenodo.11644046" target="_blank" rel="noopener">Zenodo 10.5281/zenodo.11644046</a></td>
+    </tr>
+    <tr>
+      <td><strong>cpg0016-jump</strong></td>
+      <td>SV A: hồ sơ JUMP (ORF/CRISPR/thuốc ở tầng ảnh) — dùng profile đã xử lý, không tải raw 358 TB</td>
+      <td><code>aws s3 ls --no-sign-request s3://cellpainting-gallery/cpg0016-jump/</code> · <a class="link" href="https://broadinstitute.github.io/cellpainting-gallery/complete_datasets.html" target="_blank" rel="noopener">gallery</a></td>
+    </tr>
+    <tr>
+      <td><strong>cpg0000-jump-pilot</strong> (CPJUMP1)</td>
+      <td>Mở rộng: ORF/CRISPR/thuốc — chỉ Cell Painting</td>
+      <td><code>s3://cellpainting-gallery/cpg0000-jump-pilot/</code> · DOI <a class="link" href="https://doi.org/10.1038/s41592-024-02241-6" target="_blank" rel="noopener">10.1038/s41592-024-02241-6</a></td>
+    </tr>
+    <tr>
+      <td><strong>cpg0004-lincs</strong> (Way)</td>
+      <td>Đối chiếu complementary (thuốc); Rosetta đã có LINCS-Pilot1</td>
+      <td><code>s3://cellpainting-gallery/cpg0004-lincs/</code> · DOI <a class="link" href="https://doi.org/10.1016/j.cels.2022.10.001" target="_blank" rel="noopener">10.1016/j.cels.2022.10.001</a></td>
+    </tr>
+    <tr>
+      <td><strong>GEO L1000</strong></td>
+      <td>Mở rộng RNA ngoài Rosetta (không lõi 4 tháng)</td>
+      <td><a class="link" href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE70138" target="_blank" rel="noopener">GSE70138</a> · <a class="link" href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE92742" target="_blank" rel="noopener">GSE92742</a> · <a class="link" href="https://clue.io/" target="_blank" rel="noopener">clue.io</a></td>
+    </tr>
+  </table>
+  <div class="callout">Chi tiết đủ lệnh: <code>data/DATA.md</code>. Bucket chung: <a class="link" href="https://cellpainting-gallery.s3.amazonaws.com/index.html" target="_blank" rel="noopener">cellpainting-gallery.s3.amazonaws.com</a></div>
+  <div class="brand-foot">Lõi hai phép đo = Rosetta · bộ còn lại = hỗ trợ / mở rộng</div>
+  <div class="slide-num">12 / 27</div>
+</section>
+
+<!-- 9 SHARED -->
+<section class="slide">
+  <div class="eyebrow">Khung Haghighi</div>
+  <h1>Thông tin giữa hai hồ sơ</h1>
+  <p class="body" style="margin-bottom:2mm">Gồm <strong>phần chung</strong> (dự đoán chéo) và <strong>phần bổ sung</strong> (chỉ một phép đo thấy rõ).</p>
+  <svg class="diagram" viewBox="0 0 900 140" style="max-height:55mm">
+    <ellipse cx="320" cy="70" rx="200" ry="58" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2" opacity="0.95"/>
+    <ellipse cx="580" cy="70" rx="200" ry="58" fill="#FFF6E8" stroke="#D4A24A" stroke-width="2" opacity="0.9"/>
+    <text x="210" y="65" text-anchor="middle" font-size="13" font-weight="700">Chỉ CP</text>
+    <text x="210" y="85" text-anchor="middle" font-size="11" fill="#4E6570">bổ sung · ảnh</text>
+    <text x="450" y="55" text-anchor="middle" font-size="14" font-weight="700">Chung</text>
+    <text x="450" y="75" text-anchor="middle" font-size="11" fill="#4E6570">dự đoán chéo</text>
+    <text x="450" y="92" text-anchor="middle" font-size="11" fill="#4E6570">SV B · Lasso/MLP</text>
+    <text x="690" y="65" text-anchor="middle" font-size="13" font-weight="700">Chỉ GE</text>
+    <text x="690" y="85" text-anchor="middle" font-size="11" fill="#4E6570">bổ sung · mRNA</text>
+  </svg>
+  <p class="body" style="margin:1mm 0 2mm;text-align:center">Hai vùng ngoài (chỉ CP hoặc chỉ GE): SV C ghép hai hồ sơ cho cơ chế thuốc (Fig. 4).</p>
+  <table class="nice compact">
+    <tr><th>Phần</th><th>Ý nghĩa</th><th>Ví dụ</th><th>Ai đo</th></tr>
+    <tr><td>Chung</td><td>cả ảnh và mRNA phản ánh</td><td>y ≈ f(X_CP)</td><td>B · % gen</td></tr>
+    <tr><td>Bổ sung</td><td>chỉ một phép đo thấy rõ</td><td>thuốc đổi hình, ít đổi phiên mã</td><td>C · Jaccard/F1</td></tr>
+  </table>
+  <div class="brand-foot">Haghighi 2022 · Way 2022</div>
+  <div class="slide-num">13 / 27</div>
+</section>
+
+<!-- 10 THREE ROLES SHORT -->
+<section class="slide">
+  <div class="eyebrow">Ba SV · một quy trình</div>
+  <h1>Song song trước — đồng bộ sau khi A giao hồ sơ</h1>
+  <svg class="diagram" viewBox="0 0 900 155" style="max-height:62mm">
+    <rect x="15" y="8" width="120" height="140" rx="8" fill="#FFFEFA" stroke="#0B3A4A" stroke-width="2"/>
+    <text x="75" y="50" text-anchor="middle" font-size="12" font-weight="700">Rosetta</text>
+    <text x="75" y="72" text-anchor="middle" font-size="11" fill="#4E6570">CP + L1000</text>
+    <text x="75" y="94" text-anchor="middle" font-size="11" fill="#4E6570">cùng lúc</text>
+    <text x="75" y="116" text-anchor="middle" font-size="11" fill="#4E6570">cho cả 3</text>
+
+    <text x="145" y="45" font-size="16" fill="#1A9B8E">→</text>
+    <text x="145" y="85" font-size="16" fill="#1A9B8E">→</text>
+    <text x="145" y="125" font-size="16" fill="#1A9B8E">→</text>
+
+    <rect x="175" y="8" width="200" height="42" rx="6" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="275" y="28" text-anchor="middle" font-size="12" font-weight="700">A · chỉnh nhiễu CP</text>
+    <text x="275" y="42" text-anchor="middle" font-size="10" fill="#4E6570">song song tháng 1–2</text>
+
+    <rect x="175" y="58" width="200" height="42" rx="6" fill="#FFF6E8" stroke="#D4A24A" stroke-width="2"/>
+    <text x="275" y="78" text-anchor="middle" font-size="12" font-weight="700">B · Lasso/MLP trên CP thô</text>
+    <text x="275" y="92" text-anchor="middle" font-size="10" fill="#4E6570">không chờ A để bắt đầu</text>
+
+    <rect x="175" y="108" width="200" height="40" rx="6" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="275" y="126" text-anchor="middle" font-size="12" font-weight="700">C · fusion MoA trên CP thô</text>
+    <text x="275" y="140" text-anchor="middle" font-size="10" fill="#4E6570">không chờ A để bắt đầu</text>
+
+    <text x="390" y="85" font-size="18" fill="#1A9B8E">⇒</text>
+
+    <rect x="420" y="45" width="160" height="70" rx="8" fill="#FFF6E8" stroke="#D4A24A" stroke-width="2"/>
+    <text x="500" y="72" text-anchor="middle" font-size="12" font-weight="700">A giao CP₁</text>
+    <text x="500" y="92" text-anchor="middle" font-size="11" fill="#4E6570">cuối tháng 2</text>
+    <text x="500" y="108" text-anchor="middle" font-size="10" fill="#4E6570">shared/</text>
+
+    <text x="595" y="85" font-size="18" fill="#1A9B8E">⇒</text>
+
+    <rect x="625" y="10" width="260" height="135" rx="8" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="755" y="32" text-anchor="middle" font-size="12" font-weight="700">Sau khi A giao CP₁</text>
+    <text x="755" y="55" text-anchor="middle" font-size="11" fill="#4E6570">B: chạy lại % gen</text>
+    <text x="755" y="75" text-anchor="middle" font-size="11" fill="#4E6570">C: bảng Jaccard/F1 Δ</text>
+    <text x="755" y="98" text-anchor="middle" font-size="11" fill="#4E6570">A: tiếp tục benchmark</text>
+    <text x="755" y="118" text-anchor="middle" font-size="11" fill="#4E6570">JUMP · Arevalo · viết ĐA</text>
+    <text x="755" y="136" text-anchor="middle" font-size="10" fill="#4E6570">A không dừng sau v0</text>
+  </svg>
+  <table class="nice compact">
+    <tr><th>SV</th><th>Tháng 1–2 (song song)</th><th>Sau khi A giao CP₁</th></tr>
+    <tr>
+      <td><strong>A</strong></td>
+      <td>Pipeline chỉnh nhiễu · bảng độ đo · chuẩn bị <code>shared/</code> v0</td>
+      <td>Benchmark JUMP/Arevalo · so sánh Harmony/ComBat · viết ĐA A · có thể v1</td>
+    </tr>
+    <tr>
+      <td><strong>B</strong></td>
+      <td>Lasso/MLP · % gen trên CP chưa chỉnh (4 tập)</td>
+      <td>Chạy lại một lần trên CP đã chỉnh</td>
+    </tr>
+    <tr>
+      <td><strong>C</strong></td>
+      <td>Early/late/RGCCA · MoA trên hợp chất (CP chưa chỉnh)</td>
+      <td>Thêm cột Δ trước/sau trên CP₁</td>
+    </tr>
+  </table>
+  <div class="callout sand">Họp <strong>20:30 tối thứ Năm</strong> · mốc đồng bộ: A có <code>shared/</code> profile v0 cuối tháng 2 (không phải hết việc của A)</div>
+  <div class="brand-foot">Ba đồ án · một quy trình</div>
+  <div class="slide-num">14 / 27</div>
+</section>
+
+<!-- 11 SV A DETAIL FROM SPLIT -->
+<section class="slide">
+  <div class="eyebrow">Đồ án SV A</div>
+  <h1 class="small">Đồ án A — chuẩn hóa &amp; chỉnh nhiễu hồ sơ kiểu hình</h1>
+  <svg class="diagram" viewBox="0 0 900 52" style="max-height:22mm">
+    <rect x="10" y="8" width="160" height="36" rx="6" fill="#E6F6F3" stroke="#1A9B8E"/><text x="90" y="31" text-anchor="middle" font-size="11">CP thô</text>
+    <text x="180" y="31" font-size="16" fill="#1A9B8E">→</text>
+    <rect x="205" y="8" width="200" height="36" rx="6" fill="#FFF6E8" stroke="#D4A24A"/><text x="305" y="31" text-anchor="middle" font-size="11">SVD·PCA·TVN·Harmony</text>
+    <text x="415" y="31" font-size="16" fill="#1A9B8E">→</text>
+    <rect x="440" y="8" width="160" height="36" rx="6" fill="#E6F6F3" stroke="#1A9B8E"/><text x="520" y="31" text-anchor="middle" font-size="11">CP đã chỉnh</text>
+    <text x="610" y="31" font-size="16" fill="#1A9B8E">→</text>
+    <rect x="635" y="8" width="250" height="36" rx="6" fill="#FFFEFA" stroke="#0B3A4A"/><text x="760" y="31" text-anchor="middle" font-size="11">% replicating · mAP</text>
+  </svg>
+  <table class="nice">
+    <tr><th>Phần</th><th>Mục chính</th><th>~Tr</th></tr>
+    <tr><td><strong>1 Cơ bản</strong></td><td>Nhiễu loạn &amp; profiling; Cell Painting; batch/plate/well; PCA &amp; whitening; JUMP/Rosetta CP</td><td>15–20</td></tr>
+    <tr><td><strong>2 Phương pháp</strong></td><td>Sphering; TVN 3 bước; Harmony/ComBat; percent replicating / mAP</td><td>20–30</td></tr>
+    <tr><td><strong>3 Thực nghiệm</strong></td><td>Bảng ≥3 phương pháp × độ đo; ablation; case</td><td>~20</td></tr>
+    <tr><td><strong>KL</strong></td><td>Kết luận</td><td>3–5</td></tr>
+  </table>
+  <div class="brand-foot">Đồ án A · Phần 1–2–3</div>
+  <div class="slide-num">15 / 27</div>
+</section>
+
+<!-- 12 SV B -->
+<section class="slide">
+  <div class="eyebrow">Đồ án SV B</div>
+  <h1 class="small">Đồ án B — học máy dự đoán biểu hiện gen từ kiểu hình</h1>
+  <svg class="diagram" viewBox="0 0 900 52" style="max-height:22mm">
+    <rect x="10" y="8" width="140" height="36" rx="6" fill="#E6F6F3" stroke="#1A9B8E"/><text x="80" y="31" text-anchor="middle" font-size="11">X = CP</text>
+    <text x="160" y="31" font-size="16" fill="#1A9B8E">→</text>
+    <rect x="185" y="8" width="180" height="36" rx="6" fill="#FFF6E8" stroke="#D4A24A"/><text x="275" y="31" text-anchor="middle" font-size="11">Lasso · MLP</text>
+    <text x="375" y="31" font-size="16" fill="#1A9B8E">→</text>
+    <rect x="400" y="8" width="140" height="36" rx="6" fill="#E6F6F3" stroke="#1A9B8E"/><text x="470" y="31" text-anchor="middle" font-size="11">ŷ = GE</text>
+    <text x="550" y="31" font-size="16" fill="#1A9B8E">→</text>
+    <rect x="575" y="8" width="310" height="36" rx="6" fill="#FFFEFA" stroke="#0B3A4A"/><text x="730" y="31" text-anchor="middle" font-size="11">R² · % gen · 4 tập Rosetta</text>
+  </svg>
+  <table class="nice">
+    <tr><th>Phần</th><th>Mục chính</th><th>~Tr</th></tr>
+    <tr><td><strong>1 Cơ bản</strong></td><td>L1000 landmark; hồ sơ CP; thông tin chung / bổ sung; TA-ORF yếu đã biết</td><td>15–20</td></tr>
+    <tr><td><strong>2 Phương pháp</strong></td><td>Khớp ID; Lasso; MLP; xáo trộn null; hai chiều CP ↔ GE</td><td>20–30</td></tr>
+    <tr><td><strong>3 Thực nghiệm</strong></td><td>TA-ORF vs LUAD/LINCS; ảnh hưởng tiền xử lý từ A</td><td>~20</td></tr>
+    <tr><td><strong>KL</strong></td><td>Kết luận</td><td>3–5</td></tr>
+  </table>
+  <div class="brand-foot">Đồ án B · Phần 1–2–3</div>
+  <div class="slide-num">16 / 27</div>
+</section>
+
+<!-- 13 SV C -->
+<section class="slide">
+  <div class="eyebrow">Đồ án SV C</div>
+  <h1 class="small">Đồ án C — học máy ghép hồ sơ để đoán cơ chế thuốc</h1>
+  <svg class="diagram" viewBox="0 0 900 52" style="max-height:22mm">
+    <rect x="10" y="8" width="100" height="36" rx="6" fill="#E6F6F3" stroke="#1A9B8E"/><text x="60" y="31" text-anchor="middle" font-size="11">CP</text>
+    <text x="120" y="31" font-size="14" fill="#1A9B8E">+</text>
+    <rect x="140" y="8" width="100" height="36" rx="6" fill="#FFF6E8" stroke="#D4A24A"/><text x="190" y="31" text-anchor="middle" font-size="11">GE</text>
+    <text x="250" y="31" font-size="16" fill="#1A9B8E">→</text>
+    <rect x="275" y="8" width="220" height="36" rx="6" fill="#E6F6F3" stroke="#1A9B8E"/><text x="385" y="31" text-anchor="middle" font-size="11">early·late·RGCCA</text>
+    <text x="505" y="31" font-size="16" fill="#1A9B8E">→</text>
+    <rect x="530" y="8" width="150" height="36" rx="6" fill="#FFF6E8" stroke="#D4A24A"/><text x="605" y="31" text-anchor="middle" font-size="11">nhãn MoA</text>
+    <text x="690" y="31" font-size="16" fill="#1A9B8E">→</text>
+    <rect x="715" y="8" width="170" height="36" rx="6" fill="#FFFEFA" stroke="#0B3A4A"/><text x="800" y="31" text-anchor="middle" font-size="11">Jaccard · F1 · Δ</text>
+  </svg>
+  <table class="nice">
+    <tr><th>Phần</th><th>Mục chính</th><th>~Tr</th></tr>
+    <tr><td><strong>1 Cơ bản</strong></td><td>Thông tin bổ sung &amp; ghép; cơ chế thuốc từ hồ sơ; vai A/B</td><td>15–20</td></tr>
+    <tr><td><strong>2 Phương pháp</strong></td><td>Jaccard; ghép sớm/muộn/RGCCA; quy trình A→B; mô phỏng *mở rộng*</td><td>20–30</td></tr>
+    <tr><td><strong>3 Thực nghiệm</strong></td><td>Ghép vs một hồ sơ; bảng trước/sau chỉnh nhiễu</td><td>~20</td></tr>
+    <tr><td><strong>KL</strong></td><td>Kết luận</td><td>3–5</td></tr>
+  </table>
+  <div class="brand-foot">Đồ án C · Phần 1–2–3</div>
+  <div class="slide-num">17 / 27</div>
+</section>
+
+<!-- 14 METHODS A TVN FIG -->
+<section class="slide">
+  <div class="eyebrow">Chi tiết A · TVN (Ando)</div>
+  <h1 class="small">TVN tách nhiễu kỹ thuật khỏi biến thiên kiểu hình (Ando Fig. 3)</h1>
+  <div class="two-col">
+    <div class="fig-panel">
+      <img src="figures/ando_fig3.png" alt="Ando et al. 2017 Figure 3 TVN"/>
+      <p class="fig-cap"><strong>Nguồn (crop khung hình):</strong> Ando et al., bioRxiv 2017, Fig. 3 · DOI 10.1101/161422 · PDF trang 19.</p>
+    </div>
+    <div>
+      <ol class="steps">
+        <li><strong>PCA</strong> trên đặc trưng giếng đối chứng âm (không nhất thiết cắt chiều).</li>
+        <li><strong>Chuẩn hóa từng trục</strong> về trung bình 0, phương sai 1 trên đối chứng.</li>
+        <li><strong>Căn chỉnh tương quan theo lô</strong> (CORAL / Sun et al.): whiten theo \(\Sigma\) đối chứng từng lô, recolor theo \(\Sigma\) toàn thí nghiệm.</li>
+      </ol>
+      <div class="formula-box">
+        <div class="mj">\[\displaystyle
+        z = \widehat{\mathrm{Cov}}_{\mathrm{ctrl}}^{-1/2}\bigl(x-\hat\mu_{\mathrm{ctrl}}\bigr)
+        \quad\text{(whitening / sphering)}
+        \]</div>
+        <div class="plain">\(\mathrm{Cov}\) = ma trận hiệp phương sai (không phải ký hiệu tổng). TVN thêm PCA + CORAL theo lô (Ando) — xem Fig. 3 và MATH_NOTES §2.</div>
+      </div>
+    </div>
+  </div>
+  <div class="brand-foot">Ando 2017 · TVN · whitening</div>
+  <div class="slide-num">18 / 27</div>
+</section>
+
+<!-- WAY FIG1 -->
+<section class="slide">
+  <div class="eyebrow">Bổ sung ngữ cảnh · hình từ paper</div>
+  <h1 class="small">Cell Painting (nhuộm–ảnh) và L1000 bổ sung nhau trên thuốc (Way Fig. 1)</h1>
+  <div class="fig-panel" style="max-height:130mm">
+    <img src="figures/way_fig1.png" alt="Way et al. 2022 Figure 1" style="max-height:115mm"/>
+    <p class="fig-cap"><strong>Nguồn:</strong> Way et al., Cell Systems 2022, Fig. 1 · DOI 10.1016/j.cels.2022.10.001 · ngữ cảnh hợp chất</p>
+  </div>
+  <div class="brand-foot">Way 2022 · bổ sung hình cho Phần 1</div>
+  <div class="slide-num">19 / 27</div>
+</section>
+
+<!-- 17 HANDOFF -->
+<section class="slide">
+  <div class="eyebrow">Thí nghiệm nhóm</div>
+  <h1>Giao hồ sơ giữa A → B → C</h1>
+  <svg class="diagram" viewBox="0 0 900 145" style="max-height:58mm">
+    <rect x="20" y="20" width="200" height="105" rx="8" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="120" y="48" text-anchor="middle" font-size="14" font-weight="700">A xuất</text>
+    <text x="120" y="72" text-anchor="middle" font-size="12" fill="#4E6570">CP₀ chưa chỉnh</text>
+    <text x="120" y="92" text-anchor="middle" font-size="12" fill="#4E6570">CP₁ sphering/TVN</text>
+    <text x="120" y="112" text-anchor="middle" font-size="11" fill="#4E6570">cùng ID nhiễu loạn</text>
+    <text x="240" y="75" font-size="22" fill="#1A9B8E">→</text>
+    <rect x="270" y="20" width="240" height="105" rx="8" fill="#FFF6E8" stroke="#D4A24A" stroke-width="2"/>
+    <text x="390" y="48" text-anchor="middle" font-size="14" font-weight="700">B chạy 2 lần</text>
+    <text x="390" y="72" text-anchor="middle" font-size="12" fill="#4E6570">Lasso / MLP</text>
+    <text x="390" y="92" text-anchor="middle" font-size="12" fill="#4E6570">L1000 giữ nguyên</text>
+    <text x="390" y="112" text-anchor="middle" font-size="11" fill="#4E6570">% gen trên CP₀ và CP₁</text>
+    <text x="530" y="75" font-size="22" fill="#1A9B8E">→</text>
+    <rect x="560" y="20" width="320" height="105" rx="8" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="720" y="48" text-anchor="middle" font-size="14" font-weight="700">C ghi bảng Δ</text>
+    <text x="720" y="72" text-anchor="middle" font-size="12" fill="#4E6570">Jaccard / F1</text>
+    <text x="720" y="92" text-anchor="middle" font-size="12" fill="#4E6570">trước vs sau chỉnh nhiễu</text>
+    <text x="720" y="112" text-anchor="middle" font-size="11" fill="#4E6570">cùng ID · CDRP-bio / LINCS</text>
+  </svg>
+  <table class="nice">
+    <tr><th>File giao</th><th>Nội dung</th><th>Ai đọc</th></tr>
+    <tr><td><code>shared/cp_profiles_v0.parquet</code></td><td>CP₀ + CP₁ + ID nhiễu loạn</td><td>B, C</td></tr>
+    <tr><td><code>shared/percent_predictable.csv</code></td><td>% gen · 4 tập · 2 phiên bản CP</td><td>C, slides</td></tr>
+    <tr><td><code>shared/moa_scores.csv</code></td><td>Jaccard / F1 · trước/sau</td><td>slides NCKH</td></tr>
+  </table>
+  <div class="brand-foot">Thí nghiệm nhóm · shared/</div>
+  <div class="slide-num">20 / 27</div>
+</section>
+
+<!-- 18 DELIVER + TIME -->
+<section class="slide">
+  <div class="eyebrow">Sản phẩm &amp; lịch</div>
+  <h1>Timeline 6 tháng</h1>
+  <svg class="diagram" viewBox="0 0 900 100" style="max-height:40mm">
+    <line x1="40" y1="45" x2="860" y2="45" stroke="#1A9B8E" stroke-width="4"/>
+    <circle cx="120" cy="45" r="10" fill="#1A9B8E"/>
+    <circle cx="400" cy="45" r="10" fill="#1A9B8E"/>
+    <circle cx="620" cy="45" r="10" fill="#D4A24A"/>
+    <circle cx="820" cy="45" r="10" fill="#0B3A4A"/>
+    <text x="120" y="25" text-anchor="middle" font-size="12" font-weight="700">22/11/2026</text>
+    <text x="120" y="78" text-anchor="middle" font-size="11" fill="#4E6570">Bắt đầu NCKH</text>
+    <text x="400" y="25" text-anchor="middle" font-size="12" font-weight="700">22/03/2027</text>
+    <text x="400" y="78" text-anchor="middle" font-size="11" fill="#4E6570">Nộp slides NCKH</text>
+    <text x="620" y="25" text-anchor="middle" font-size="12" font-weight="700">22/04/2027</text>
+    <text x="620" y="78" text-anchor="middle" font-size="11" fill="#4E6570">Khóa đồ án</text>
+    <text x="820" y="25" text-anchor="middle" font-size="12" font-weight="700">22/05/2027</text>
+    <text x="820" y="78" text-anchor="middle" font-size="11" fill="#4E6570">Bảo vệ</text>
+  </svg>
+  <table class="nice">
+    <tr><th>Giai đoạn</th><th>Thời gian</th><th>Sản phẩm</th></tr>
+    <tr><td>NCKH</td><td>4 tháng</td><td>data · quy trình · slides nhóm · 3 bảng số (A/B/C)</td></tr>
+    <tr><td>Khóa ĐA</td><td>1 tháng</td><td>đủ Phần 1–2–3 từng SV</td></tr>
+    <tr><td>Thủ tục</td><td>1 tháng</td><td>BV · clone sạch chạy lại</td></tr>
+  </table>
+  <div class="callout sand">Họp <strong>20:30 tối thứ Năm</strong> · Nộp NCKH: A benchmark · B % dự đoán · C ghép + Δ</div>
+  <div class="brand-foot">PLAN_4MONTH</div>
+  <div class="slide-num">21 / 27</div>
+</section>
+
+<!-- 19 FILES -->
+<section class="slide">
+  <div class="eyebrow">Bản đồ file</div>
+  <h1>Cây thư mục dự án</h1>
+  <svg class="diagram" viewBox="0 0 900 95" style="max-height:38mm">
+    <rect x="350" y="5" width="200" height="28" rx="6" fill="#0B3A4A"/><text x="450" y="24" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">gene-rna-protein/</text>
+    <line x1="450" y1="33" x2="450" y2="48" stroke="#1A9B8E" stroke-width="2"/>
+    <line x1="80" y1="48" x2="820" y2="48" stroke="#1A9B8E" stroke-width="2"/>
+    <line x1="80" y1="48" x2="80" y2="58" stroke="#1A9B8E" stroke-width="2"/>
+    <line x1="260" y1="48" x2="260" y2="58" stroke="#1A9B8E" stroke-width="2"/>
+    <line x1="450" y1="48" x2="450" y2="58" stroke="#1A9B8E" stroke-width="2"/>
+    <line x1="640" y1="48" x2="640" y2="58" stroke="#1A9B8E" stroke-width="2"/>
+    <line x1="820" y1="48" x2="820" y2="58" stroke="#1A9B8E" stroke-width="2"/>
+    <rect x="20" y="58" width="120" height="32" rx="6" fill="#E6F6F3" stroke="#1A9B8E"/><text x="80" y="78" text-anchor="middle" font-size="11">OUTLINE</text>
+    <rect x="200" y="58" width="120" height="32" rx="6" fill="#E6F6F3" stroke="#1A9B8E"/><text x="260" y="78" text-anchor="middle" font-size="11">SPLIT_PLAN</text>
+    <rect x="390" y="58" width="120" height="32" rx="6" fill="#FFF6E8" stroke="#D4A24A"/><text x="450" y="78" text-anchor="middle" font-size="11">data/</text>
+    <rect x="580" y="58" width="120" height="32" rx="6" fill="#FFF6E8" stroke="#D4A24A"/><text x="640" y="78" text-anchor="middle" font-size="11">work/</text>
+    <rect x="760" y="58" width="120" height="32" rx="6" fill="#E6F6F3" stroke="#1A9B8E"/><text x="820" y="78" text-anchor="middle" font-size="11">literature/</text>
+  </svg>
+  <table class="nice">
+    <tr><th>Nhu cầu</th><th>File</th></tr>
+    <tr><td>Bài toán &amp; phạm vi</td><td><code>OUTLINE.md</code></td></tr>
+    <tr><td>Chi tiết từng SV / mục lục trang</td><td><code>SPLIT_PLAN.md</code></td></tr>
+    <tr><td>Link + lệnh data</td><td><code>data/DATA.md</code></td></tr>
+    <tr><td>Todos (PDF, Fig, công thức)</td><td><code>work/role-a|b|c/TODOS.md</code></td></tr>
+    <tr><td>PDF chụp + cite</td><td><code>literature/papers/</code></td></tr>
+    <tr><td>QC slides</td><td><code>slides/nckh-briefing/QC_REPORT.md</code></td></tr>
+  </table>
+  <div class="brand-foot">README.md</div>
+  <div class="slide-num">22 / 27</div>
+</section>
+
+<!-- 20 SCOPE -->
+<section class="slide">
+  <div class="eyebrow">Phạm vi dự án</div>
+  <h1>Khối việc trong 4 tháng</h1>
+  <svg class="diagram" viewBox="0 0 900 165" style="max-height:68mm">
+    <rect x="20" y="15" width="270" height="135" rx="10" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="155" y="45" text-anchor="middle" font-size="14" font-weight="700">Định nghĩa</text>
+    <text x="155" y="72" text-anchor="middle" font-size="12" fill="#4E6570">CP = nhuộm+ảnh→hồ sơ</text>
+    <text x="155" y="94" text-anchor="middle" font-size="12" fill="#4E6570">L1000 ≈ 978 mRNA</text>
+    <text x="155" y="116" text-anchor="middle" font-size="12" fill="#4E6570">Rosetta = neo 2 phép đo</text>
+    <text x="155" y="138" text-anchor="middle" font-size="11" fill="#4E6570">LUAD·LINCS·CDRP·TA-ORF</text>
+    <rect x="315" y="15" width="270" height="135" rx="10" fill="#FFF6E8" stroke="#D4A24A" stroke-width="2"/>
+    <text x="450" y="45" text-anchor="middle" font-size="14" font-weight="700">Ba SV</text>
+    <text x="450" y="72" text-anchor="middle" font-size="12" fill="#4E6570">A: chỉnh nhiễu CP</text>
+    <text x="450" y="94" text-anchor="middle" font-size="12" fill="#4E6570">B: dự đoán chéo</text>
+    <text x="450" y="116" text-anchor="middle" font-size="12" fill="#4E6570">C: fusion MoA</text>
+    <text x="450" y="138" text-anchor="middle" font-size="11" fill="#4E6570">CDRP-bio / LINCS</text>
+    <rect x="610" y="15" width="270" height="135" rx="10" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="745" y="45" text-anchor="middle" font-size="14" font-weight="700">Mở rộng</text>
+    <text x="745" y="72" text-anchor="middle" font-size="12" fill="#4E6570">Way: hợp chất</text>
+    <text x="745" y="94" text-anchor="middle" font-size="12" fill="#4E6570">JUMP / CPJUMP1</text>
+    <text x="745" y="116" text-anchor="middle" font-size="12" fill="#4E6570">tầng ảnh</text>
+    <text x="745" y="138" text-anchor="middle" font-size="11" fill="#4E6570">sau lõi Rosetta</text>
+  </svg>
+  <table class="nice">
+    <tr><th>Trọng tâm</th><th>Ngoài trọng tâm NCKH</th></tr>
+    <tr><td>thông tin chung / bổ sung · chỉnh nhiễu kỹ thuật</td><td>mô hình nhân quả Gene→RNA→kiểu hình làm trụ</td></tr>
+  </table>
+  <div class="brand-foot">OUTLINE · SPLIT_PLAN</div>
+  <div class="slide-num">23 / 27</div>
+</section>
+
+<!-- 21 READ ORDER -->
+<section class="slide">
+  <div class="eyebrow">Thứ tự đọc paper</div>
+  <h1>Chuỗi đọc: phép đo → hai hồ sơ → chỉnh nhiễu</h1>
+  <svg class="diagram" viewBox="0 0 900 120" style="max-height:48mm">
+    <rect x="10" y="30" width="130" height="55" rx="8" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="75" y="55" text-anchor="middle" font-size="12" font-weight="700">Bray</text>
+    <text x="75" y="72" text-anchor="middle" font-size="10" fill="#4E6570">Cell Painting</text>
+    <text x="150" y="60" font-size="18" fill="#1A9B8E">→</text>
+    <rect x="175" y="30" width="130" height="55" rx="8" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="240" y="55" text-anchor="middle" font-size="12" font-weight="700">Subramanian</text>
+    <text x="240" y="72" text-anchor="middle" font-size="10" fill="#4E6570">L1000</text>
+    <text x="315" y="60" font-size="18" fill="#1A9B8E">→</text>
+    <rect x="340" y="30" width="130" height="55" rx="8" fill="#FFF6E8" stroke="#D4A24A" stroke-width="2"/>
+    <text x="405" y="55" text-anchor="middle" font-size="12" font-weight="700">Haghighi</text>
+    <text x="405" y="72" text-anchor="middle" font-size="10" fill="#4E6570">Fig. 2–4</text>
+    <text x="480" y="60" font-size="18" fill="#1A9B8E">→</text>
+    <rect x="505" y="30" width="110" height="55" rx="8" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="560" y="55" text-anchor="middle" font-size="12" font-weight="700">Rohban</text>
+    <text x="560" y="72" text-anchor="middle" font-size="10" fill="#4E6570">TA-ORF</text>
+    <text x="625" y="60" font-size="18" fill="#1A9B8E">→</text>
+    <rect x="650" y="15" width="110" height="40" rx="8" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="705" y="40" text-anchor="middle" font-size="11" font-weight="700">Way</text>
+    <rect x="650" y="60" width="110" height="40" rx="8" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="705" y="85" text-anchor="middle" font-size="11" font-weight="700">Ando</text>
+    <text x="770" y="60" font-size="18" fill="#1A9B8E">→</text>
+    <rect x="795" y="30" width="95" height="55" rx="8" fill="#FFF6E8" stroke="#D4A24A" stroke-width="2"/>
+    <text x="842" y="55" text-anchor="middle" font-size="11" font-weight="700">Arevalo</text>
+    <text x="842" y="72" text-anchor="middle" font-size="10" fill="#4E6570">batch</text>
+  </svg>
+  <table class="nice">
+    <tr><th>#</th><th>Paper</th><th>Đọc để biết</th><th>Ai ưu tiên</th></tr>
+    <tr><td>1–2</td><td>Bray · Subramanian</td><td>phép đo CP / L1000</td><td>cả nhóm</td></tr>
+    <tr><td>3</td><td>Haghighi 2022</td><td>Rosetta · Fig. 2–4</td><td>cả nhóm</td></tr>
+    <tr><td>4</td><td>Rohban 2017</td><td>TA-ORF + CP</td><td>B</td></tr>
+    <tr><td>5–6</td><td>Way · Ando · Arevalo</td><td>bổ sung / TVN / batch</td><td>A, C</td></tr>
+    <tr><td>*</td><td>CPJUMP1</td><td>CRISPR/ORF tầng ảnh</td><td>mở rộng</td></tr>
+  </table>
+  <div class="brand-foot">literature/</div>
+  <div class="slide-num">24 / 27</div>
+</section>
+
+<!-- 22 START -->
+<section class="slide cover">
+  <div class="cover-top">
+    <div class="brand">48 GIỜ ĐẦU</div>
+    <div class="pill">20:30 tối thứ Năm</div>
+  </div>
+  <h1>Việc cụ thể</h1>
+  <ol class="steps">
+    <li>Điền tên SV A/B/C vào <code>SPLIT_PLAN.md</code>; tạo repo <code>GITHUB.md</code>.</li>
+    <li>Sync Rosetta curated (slide data neo); ghi <code>data/inventory.md</code>.</li>
+    <li>Đọc Bray + Haghighi (định nghĩa hai phép đo + Hình 2–4).</li>
+    <li>Mỗi SV mở todo đầu trong <code>work/role-*/TODOS.md</code>.</li>
+  </ol>
+  <div class="callout">
+    Nhớ: <strong>L1000 = đo mRNA landmark · Cell Painting = nhuộm + ảnh → đặc trưng hình thái · họp 20:30 tối thứ Năm.</strong>
+  </div>
+  <div class="brand-foot">https://broad.io/rosetta/</div>
+  <div class="slide-num">25 / 27</div>
+</section>
+
+<!-- 23 SUMMARY -->
+<section class="slide">
+  <div class="eyebrow">Tóm tắt</div>
+  <h1>Một trang nhớ lại</h1>
+  <svg class="diagram" viewBox="0 0 900 175" style="max-height:72mm">
+    <rect x="20" y="15" width="200" height="145" rx="10" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="120" y="45" text-anchor="middle" font-size="14" font-weight="700">Bài toán</text>
+    <text x="120" y="75" text-anchor="middle" font-size="12" fill="#4E6570">nhiễu loạn</text>
+    <text x="120" y="95" text-anchor="middle" font-size="12" fill="#4E6570">→ CP + L1000</text>
+    <text x="120" y="115" text-anchor="middle" font-size="12" fill="#4E6570">chung / bổ sung</text>
+    <text x="120" y="140" text-anchor="middle" font-size="11" fill="#4E6570">Rosetta</text>
+    <rect x="240" y="15" width="200" height="145" rx="10" fill="#FFF6E8" stroke="#D4A24A" stroke-width="2"/>
+    <text x="340" y="45" text-anchor="middle" font-size="14" font-weight="700">Mục đích</text>
+    <text x="340" y="75" text-anchor="middle" font-size="12" fill="#4E6570">% gen dự đoán</text>
+    <text x="340" y="95" text-anchor="middle" font-size="12" fill="#4E6570">MoA fusion</text>
+    <text x="340" y="115" text-anchor="middle" font-size="12" fill="#4E6570">chỉnh nhiễu</text>
+    <text x="340" y="140" text-anchor="middle" font-size="11" fill="#4E6570">đo lại căn chỉnh</text>
+    <rect x="460" y="15" width="200" height="145" rx="10" fill="#E6F6F3" stroke="#1A9B8E" stroke-width="2"/>
+    <text x="560" y="45" text-anchor="middle" font-size="14" font-weight="700">Dữ liệu</text>
+    <text x="560" y="75" text-anchor="middle" font-size="12" fill="#4E6570">cpg0003</text>
+    <text x="560" y="95" text-anchor="middle" font-size="12" fill="#4E6570">4 tập curated</text>
+    <text x="560" y="115" text-anchor="middle" font-size="12" fill="#4E6570">+ JUMP / Way</text>
+    <text x="560" y="140" text-anchor="middle" font-size="11" fill="#4E6570">hỗ trợ A</text>
+    <rect x="680" y="15" width="200" height="145" rx="10" fill="#FFF6E8" stroke="#D4A24A" stroke-width="2"/>
+    <text x="780" y="45" text-anchor="middle" font-size="14" font-weight="700">Ba ĐA</text>
+    <text x="780" y="75" text-anchor="middle" font-size="12" fill="#4E6570">A: batch CP</text>
+    <text x="780" y="95" text-anchor="middle" font-size="12" fill="#4E6570">B: Lasso/MLP</text>
+    <text x="780" y="115" text-anchor="middle" font-size="12" fill="#4E6570">C: fusion MoA</text>
+    <text x="780" y="140" text-anchor="middle" font-size="11" fill="#4E6570">SPLIT_PLAN D1–D3</text>
+  </svg>
+  <table class="nice">
+    <tr><th>Họp</th><th>Giao NCKH</th><th>Todos</th></tr>
+    <tr><td>20:30 tối thứ Năm</td><td>22/03/2027 · 3 bảng số</td><td><code>work/role-a|b|c/TODOS.md</code></td></tr>
+  </table>
+  <div class="brand-foot">Rosetta Cellular</div>
+  <div class="slide-num">26 / 27</div>
+</section>
+
+<!-- 24 END -->
+<section class="slide cover">
+  <div class="cover-top">
+    <div class="brand">ROSETTA CELLULAR</div>
+    <div class="pill">Hết deck</div>
+  </div>
+  <h1>Bắt đầu từ todos từng SV</h1>
+  <p class="lede"><code>work/role-a|b|c/TODOS.md</code> · họp <strong>20:30 tối thứ Năm</strong>.</p>
+  <div class="brand-foot">SPLIT_PLAN.md · PLAN_4MONTH.md</div>
+  <div class="slide-num">27 / 27</div>
+</section>
+
+</div>
+
+<nav class="nav" aria-label="Điều hướng">
+  <button type="button" id="prev" title="Trang trước">← Trước</button>
+  <span class="hint">Phím ← → · F trình chiếu · Ctrl+P in PDF</span>
+  <button type="button" id="next" title="Trang tiếp">Tiếp →</button>
+</nav>
+
+<script src="slides.js"></script>
+</body>
+</html>

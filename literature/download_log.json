@@ -1,0 +1,68 @@
+[
+  {
+    "file": "2022_Haghighi_Rosetta.pdf",
+    "status": "ok",
+    "bytes": 3498902,
+    "url": "https://carpenter-singh-lab.broadinstitute.org/files/anne/files/168_haghighi_natmethods_2022.pdf",
+    "http": 200
+  },
+  {
+    "file": "2022_Way_Complementary.pdf",
+    "status": "ok",
+    "bytes": 5218759,
+    "url": "https://carpenter-singh-lab.broadinstitute.org/files/anne/files/169_way_cellsystems_2022.pdf",
+    "http": 200
+  },
+  {
+    "file": "2017_Ando_TVN_Sphering.pdf",
+    "status": "fail",
+    "bytes": 0,
+    "url": null,
+    "errors": [
+      "HTTPError:https://www.biorxiv.org/content/biorxiv/early/2017/07/10/161422.full.pdf:HTTP Error 403: Forbidden",
+      "HTTPError:https://www.biorxiv.org/content/10.1101/161422v1.full.pdf:HTTP Error 403: Forbidden"
+    ]
+  },
+  {
+    "file": "2017_Subramanian_L1000_CMap.pdf",
+    "status": "fail",
+    "bytes": 0,
+    "url": null,
+    "errors": [
+      "HTTPError:https://www.cell.com/cell/pdf/S0092-8674(17)31309-0.pdf:HTTP Error 403: Forbidden",
+      "HTTPError:https://europepmc.org/articles/PMC5990023?pdf=render:HTTP Error 403: Forbidden",
+      "too_small:https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5990023/pdf/nihms971392.pdf:1817"
+    ]
+  },
+  {
+    "file": "2019_Korsunsky_Harmony.pdf",
+    "status": "fail",
+    "bytes": 0,
+    "url": null,
+    "errors": [
+      "too_small:https://www.nature.com/articles/s41592-019-0619-0.pdf:3038",
+      "HTTPError:https://europepmc.org/articles/PMC6884693?pdf=render:HTTP Error 403: Forbidden",
+      "too_small:https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6884693/pdf/nihms-1059817.pdf:21435",
+      "HTTPError:https://www.biorxiv.org/content/biorxiv/early/2018/11/05/461954.full.pdf:HTTP Error 403: Forbidden"
+    ]
+  },
+  {
+    "file": "2017_Johnson_ComBat.pdf",
+    "status": "ok",
+    "bytes": 238565,
+    "url": "https://bioconductor.org/packages/release/bioc/vignettes/sva/inst/doc/sva.pdf",
+    "http": 200
+  },
+  {
+    "file": "2022_Replogle_PerturbSeq.pdf",
+    "status": "fail",
+    "bytes": 0,
+    "url": null,
+    "errors": [
+      "HTTPError:https://www.cell.com/cell/pdf/S0092-8674(22)00597-9.pdf:HTTP Error 403: Forbidden",
+      "HTTPError:https://europepmc.org/articles/PMC9380471?pdf=render:HTTP Error 403: Forbidden",
+      "too_small:https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9380471/pdf/nihms-1820148.pdf:1817",
+      "HTTPError:https://www.biorxiv.org/content/biorxiv/early/2021/12/17/2021.12.16.473013.full.pdf:HTTP Error 403: Forbidden"
+    ]
+  }
+]

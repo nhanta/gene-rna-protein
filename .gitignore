@@ -1,0 +1,9 @@
+data/raw/
+data/processed/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Publisher PDFs and PMC full text stay on disk. DOIs: literature/README.md
+literature/papers/*.pdf
+literature/text/*.txt

@@ -1,0 +1,5 @@
+arevalo_fig1.png — Arevalo et al., Nat Commun 2024, Fig. 1 (crop khung hình, PDF trang 3) · DOI 10.1038/s41467-024-50613-5
+haghighi_fig2.png — Haghighi et al., Nat Methods 2022, Fig. 2 (crop, PDF trang 4) · DOI 10.1038/s41592-022-01667-0
+haghighi_fig4.png — Haghighi et al., Nat Methods 2022, Fig. 4 (crop, PDF trang 6) · DOI 10.1038/s41592-022-01667-0
+way_fig1.png — Way et al., Cell Systems 2022, Fig. 1 (crop, PDF trang 3) · DOI 10.1016/j.cels.2022.10.001
+ando_fig3.png — Ando et al., bioRxiv 2017, Fig. 3 (crop, PDF trang 19) · DOI 10.1101/161422
