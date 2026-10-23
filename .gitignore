@@ -7,3 +7,6 @@ __pycache__/
 # Publisher PDFs and PMC full text stay on disk. DOIs: literature/README.md
 literature/papers/*.pdf
 literature/text/*.txt
+
+# Ghi chú điều phối agent, chỉ giữ trên máy
+work/AGENTS.md

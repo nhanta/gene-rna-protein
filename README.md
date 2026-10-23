@@ -12,7 +12,6 @@
 | [`work/00-COORDINATION-MAP.md`](work/00-COORDINATION-MAP.md) | Khóa ownership 3 roles + template todo + Nhật ký |
 | [`work/role-a/TODOS.md`](work/role-a/TODOS.md) · [`role-b`](work/role-b/TODOS.md) · [`role-c`](work/role-c/TODOS.md) | Todos NCKH chi tiết (paper / data / toán / hình) |
 | [`work/thesis-synthesis/`](work/thesis-synthesis/) | Map todo → slides đồ án Phần 1–2–3 sau NCKH |
-| [`work/AGENTS.md`](work/AGENTS.md) | Subagents & bus phối hợp |
 | [`PLAN_4MONTH.md`](PLAN_4MONTH.md) | Lịch 4+1+1, phân vai theo tuần, cổng tháng |
 | [`OUTLINE.md`](OUTLINE.md) | Bài toán bám paper, phạm vi A/B/C |
 | [`SPLIT_PLAN.md`](SPLIT_PLAN.md) | Tách 3 đồ án + mục lục/trang |
