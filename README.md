@@ -29,6 +29,57 @@
 | **B** | `branch_b` | Lasso/MLP dự đoán chéo CP↔L1000 |
 | **C** | `branch_c` | Fusion MoA (compound) + alignment sau batch |
 
+## Clone, pull, push
+
+Remote: `https://github.com/nhanta/gene-rna-protein.git`
+
+`main` là bản chung. Mỗi người làm trên một nhánh: A → `branch_a`, B → `branch_b`, C → `branch_c`. Lệnh dưới viết cho người A; B và C đổi tên nhánh cho đúng vai.
+
+### Clone (một lần)
+
+```bash
+git clone https://github.com/nhanta/gene-rna-protein.git
+cd gene-rna-protein
+git checkout branch_a
+```
+
+`git clone` đứng ở `main`. `git checkout branch_a` tạo nhánh local theo `origin/branch_a`.
+
+### Pull `main`
+
+Lấy bản chung mới nhất về máy:
+
+```bash
+git checkout main
+git pull origin main
+```
+
+### Pull nhánh của mình
+
+Đứng trên nhánh được giao, kéo nhánh đó, rồi gộp `main` vào:
+
+```bash
+git checkout branch_a
+git pull origin branch_a
+git pull origin main
+```
+
+`git pull origin main` khi đang ở `branch_a` đưa commit mới của bản chung vào nhánh làm việc. Chạy cặp lệnh này trước mỗi buổi code.
+
+### Push nhánh của mình
+
+```bash
+git checkout branch_a
+git status
+git add <file vừa sửa>
+git commit -m "Mô tả ngắn việc vừa làm"
+git push origin branch_a
+```
+
+A push `branch_a`, B push `branch_b`, C push `branch_c`.
+
+Phần chung (`shared/`, slides nhóm, số liệu đã chốt) vào `main` bằng pull request từ nhánh của mình. Trên GitHub: **Compare & pull request**, base `main`, compare đúng nhánh đó. `main` nhận thay đổi sau một lượt review.
+
 ## Câu chuyện một dòng
 
 Cùng nhiễu loạn (compound / ORF) → đo **Cell Painting** và **L1000** → shared vs complementary; batch/sphering trên CP đổi kết quả multimodal thế nào (Haghighi, Way, Ando, Arevalo).
