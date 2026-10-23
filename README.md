@@ -16,7 +16,7 @@
 | [`OUTLINE.md`](OUTLINE.md) | Bài toán bám paper, phạm vi A/B/C |
 | [`SPLIT_PLAN.md`](SPLIT_PLAN.md) | Tách 3 đồ án + mục lục/trang |
 | [`GITHUB.md`](GITHUB.md) | `main` + `branch_a|b|c`, clone & smoke trước BV |
-| [`slides/nckh-briefing/index.html`](slides/nckh-briefing/index.html) | Slides kickoff (không thay todos chi tiết) |
+| [`slides/nckh-briefing/index.html`](slides/nckh-briefing/index.html) · [`PDF`](slides/nckh-briefing/nckh-briefing.pdf) | Slides kickoff, 27 trang khổ 16:9 |
 | [`data/DATA.md`](data/DATA.md) | Link tải Rosetta |
 | [`math/MATH_NOTES.md`](math/MATH_NOTES.md) | Công thức |
 | [`literature/README.md`](literature/README.md) | PDF đã tải |
